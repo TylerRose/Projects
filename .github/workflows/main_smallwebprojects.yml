@@ -22,6 +22,18 @@ jobs:
           dotnet-version: '6.0.x'
           include-prerelease: true
 
+      - run: 'npm ci'
+        name: Run NPM install
+        working-directory: ./Projects.Web
+            
+      - run: run build
+        name: npm run build
+        working-directory: ./Projects.Web
+            
+      - run: npm run coalesce
+        name: run coalesce
+        working-directory: ./Projects.Web
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 

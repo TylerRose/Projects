@@ -29,10 +29,6 @@ jobs:
       - run: npm run build
         name: npm run build
         working-directory: ./Projects.Web
-            
-      - run: dotnet coalesce
-        name: run coalesce
-        working-directory: ./Projects.Web
 
       - name: Build with dotnet
         run: dotnet build --configuration Release

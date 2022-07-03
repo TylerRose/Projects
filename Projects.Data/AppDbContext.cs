@@ -35,7 +35,8 @@ public class AppDbContext : DbContext
     {
         try
         {
-            this.Database.Migrate();
+            // TODO: Fix database connection
+            //this.Database.Migrate();
             
             // TODO: Or, use Database.EnsureCreated() instead:
             // this.Database.EnsureCreated();

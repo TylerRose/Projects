@@ -32,7 +32,7 @@
             thumb-label="always"
           ></v-slider>
           <v-text-field
-            v-model="initialAngle1"
+            v-model="initialAngle1x"
             hide-details
             single-line
             label="Initial Angle 1"
@@ -59,7 +59,7 @@
             thumb-label="always"
           ></v-slider>
           <v-text-field
-            v-model="initialAngle2"
+            v-model="initialAngle2x"
             hide-details
             single-line
             label="Initial Angle 2"
@@ -88,12 +88,12 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import {Component, Vue, Watch} from "vue-property-decorator";
 import * as bln from "babylonjs";
-import { Utils } from "@/Scripts/Utils";
+import {Utils} from "@/Scripts/Utils";
 import Vector3 = bln.Vector3;
 
-@Component({ components: {} })
+@Component({components: {}})
 export default class Pendulum extends Vue {
   mass1 = 0;
   radius1 = 10;
@@ -101,8 +101,10 @@ export default class Pendulum extends Vue {
   radius2 = 10;
   gravity = 0;
 
-  initialAngle1 = 0;
-  initialAngle2 = 0;
+  initialAngle1x = 0;
+  initialAngle2x = 0;
+  initialAngle1z = 0;
+  initialAngle2z = 0;
 
   aspectRatio: number = 16 / 9;
   height = 600;
@@ -114,12 +116,19 @@ export default class Pendulum extends Vue {
   traceScene!: bln.Scene;
   doTrace = true;
 
-  angle1_vel = 0;
-  angle2_vel = 0;
-  angle1_acc = 0;
-  angle2_acc = 0;
-  angle1 = 0;
-  angle2 = 0;
+  angle1x_vel = 0;
+  angle2x_vel = 0;
+  angle1x_acc = 0;
+  angle2x_acc = 0;
+  angle1x = 0;
+  angle2x = 0;
+
+  angle1z_vel = 0;
+  angle2z_vel = 0;
+  angle1z_acc = 0;
+  angle2z_acc = 0;
+  angle1z = 0;
+  angle2z = 0;
 
   ball1Accel: Vector3 = new Vector3(0, 0, 0);
   ball1Vel: Vector3 = new Vector3(0, 0, 0);
@@ -144,6 +153,7 @@ export default class Pendulum extends Vue {
   mounted() {
     const initRad1 = localStorage.getItem("radius1");
     if (initRad1 !== null) this.radius1 = Number.parseFloat(initRad1);
+    else this.defaults();
     const initRad2 = localStorage.getItem("radius2");
     if (initRad2 !== null) this.radius2 = Number.parseFloat(initRad2);
 
@@ -152,16 +162,28 @@ export default class Pendulum extends Vue {
     const initMass2 = localStorage.getItem("mass2");
     if (initMass2 !== null) this.mass2 = Number.parseFloat(initMass2);
 
-    const initAngle1 = localStorage.getItem("initialAngle1");
-    if (initAngle1 !== null) {
-      this.angle1 = Number.parseFloat(initAngle1);
-      this.initialAngle1 = this.angle1;
+    const initAngle1x = localStorage.getItem("initialAngle1x");
+    if (initAngle1x !== null) {
+      this.angle1x = Number.parseFloat(initAngle1x);
+      this.initialAngle1x = this.angle1x;
     }
-    const initAngle2 = localStorage.getItem("initialAngle2");
-    if (initAngle2 !== null) {
-      this.angle2 = Number.parseFloat(initAngle2);
-      this.initialAngle2 = this.angle2;
+    const initAngle2x = localStorage.getItem("initialAngle2x");
+    if (initAngle2x !== null) {
+      this.angle2x = Number.parseFloat(initAngle2x);
+      this.initialAngle2x = this.angle2x;
     }
+
+    const initAngle1z = localStorage.getItem("initialAngle1z");
+    if (initAngle1z !== null) {
+      this.angle1z = Number.parseFloat(initAngle1z);
+      this.initialAngle1z = this.angle1z;
+    }
+    const initAngle2z = localStorage.getItem("initialAngle2z");
+    if (initAngle2z !== null) {
+      this.angle2z = Number.parseFloat(initAngle2z);
+      this.initialAngle2z = this.angle2z;
+    }
+    
     const gravity = localStorage.getItem("gravity");
     if (gravity !== null) this.gravity = Number.parseFloat(gravity);
 
@@ -195,14 +217,24 @@ export default class Pendulum extends Vue {
     localStorage.setItem("mass2", this.mass2.toString());
   }
 
-  @Watch("initialAngle1")
-  saveA1() {
-    localStorage.setItem("initialAngle1", this.initialAngle1.toString());
+  @Watch("initialAngle1x")
+  saveA1x() {
+    localStorage.setItem("initialAngle1x", this.initialAngle1x.toString());
   }
 
-  @Watch("initialAngle2")
-  saveA2() {
-    localStorage.setItem("initialAngle2", this.initialAngle2.toString());
+  @Watch("initialAngle2x")
+  saveA2x() {
+    localStorage.setItem("initialAngle2x", this.initialAngle2x.toString());
+  }
+
+  @Watch("initialAngle1z")
+  saveA1z() {
+    localStorage.setItem("initialAngle1z", this.initialAngle1z.toString());
+  }
+
+  @Watch("initialAngle2z")
+  saveA2z() {
+    localStorage.setItem("initialAngle2z", this.initialAngle2z.toString());
   }
 
   @Watch("gravity")
@@ -215,33 +247,63 @@ export default class Pendulum extends Vue {
   }
 
   defaults() {
+    /*
+        this.radius1 = 10;
+    this.radius2 = 15;
+    this.mass1 = 15;
+    this.mass2 = 5;
+    this.gravity = 0.1;
+    this.initialAngle1x = 90;
+    this.initialAngle2x = 135;
+     */
     this.radius1 = 10;
     this.radius2 = 15;
     this.mass1 = 15;
     this.mass2 = 5;
     this.gravity = 0.1;
-    this.initialAngle1 = 90;
-    this.initialAngle2 = 135;
+    // this.initialAngle1x = 90;
+    // this.initialAngle2x = 135;
+    this.initialAngle1x = 0;
+    this.initialAngle2x = 0;
+    this.initialAngle1z = 0;
+    this.initialAngle2z = 0;
   }
 
-  get angle1Deg() {
+  get angle1xDeg() {
     return Number.parseFloat(
-      ((this.angle1 * (180 / Math.PI)) % 360).toPrecision(12)
+      ((this.angle1x * (180 / Math.PI)) % 360).toPrecision(12)
     );
   }
 
-  set angle1Deg(value: number) {
-    this.initialAngle1 = value * (Math.PI / 180);
+  set angle1xDeg(value: number) {
+    this.initialAngle1x = value * (Math.PI / 180);
   }
 
-  get angle2Deg() {
+  get angle2xDeg() {
     return Number.parseFloat(
-      ((this.angle1 * (180 / Math.PI)) % 360).toPrecision(12)
+      ((this.angle1x * (180 / Math.PI)) % 360).toPrecision(12)
     );
   }
 
-  set angle2Deg(value: number) {
-    this.initialAngle2 = value * (Math.PI / 180);
+  get angle1zDeg() {
+    return Number.parseFloat(
+      ((this.angle1z * (180 / Math.PI)) % 360).toPrecision(12)
+    );
+  }
+
+  set angle1zDeg(value: number) {
+    this.initialAngle1z = value * (Math.PI / 180);
+  }
+
+  get angle2zDeg() {
+    return Number.parseFloat(
+      ((this.angle1z * (180 / Math.PI)) % 360).toPrecision(12)
+    );
+  }
+
+
+  set angle2xDeg(value: number) {
+    this.initialAngle2x = value * (Math.PI / 180);
   }
 
   async createScene() {
@@ -276,9 +338,9 @@ export default class Pendulum extends Vue {
     const material2 = new bln.StandardMaterial("material", this.scene);
     material2.emissiveColor = new bln.Color3(0.5, 1.0, 0.5);
 
-    this.ball1 = bln.MeshBuilder.CreateSphere("ball", { diameter: 1 });
+    this.ball1 = bln.MeshBuilder.CreateSphere("ball", {diameter: 1});
     this.ball1.material = material;
-    this.ball2 = bln.MeshBuilder.CreateSphere("ball", { diameter: 1 });
+    this.ball2 = bln.MeshBuilder.CreateSphere("ball", {diameter: 1});
     this.ball2.material = material2;
 
     //this.lines = bln.MeshBuilder.CreateLines('lines', this.lineOptions, this.scene);
@@ -311,7 +373,7 @@ export default class Pendulum extends Vue {
       .filter((m) => m.position == Utils.vec3(0))
       .forEach((m) => m.dispose());
 
-    if (Math.abs(this.angle1_acc) <= 100 && Math.abs(this.angle2_acc) <= 100) {
+    if (Math.abs(this.angle1x_acc) <= 100 && Math.abs(this.angle2x_acc) <= 100) {
       this.lineOptions.points = [
         Utils.vec3(0),
         this.ball1.position,
@@ -326,92 +388,90 @@ export default class Pendulum extends Vue {
       // this.ball2.position = this.ball1.position.add(Utils.vec3(this.radius2).multiply(new Vector3(Math.sin(this.angle2),Math.cos(this.angle2),0)))
       // console.log(Utils.dist3(this.ball1.position, new Vector3(0, 0, 0)))
 
-      //Apply some gravity
-      const angle1_vel2 = Math.pow(this.angle1_vel, 2);
-      const angle2_vel2 = Math.pow(this.angle2_vel, 2);
+      //Apply some gravity left/right
+      const angle1x_vel2 = Math.pow(this.angle1x_vel, 2);
+      const angle2x_vel2 = Math.pow(this.angle2x_vel, 2);
       let numerator1 =
-        -this.gravity * (2 * this.mass1 + this.mass2) * Math.sin(this.angle1) -
-        this.mass2 * this.gravity * Math.sin(this.angle1 - 2 * this.angle2) -
+        -this.gravity * (2 * this.mass1 + this.mass2) * Math.sin(this.angle1x) -
+        this.mass2 * this.gravity * Math.sin(this.angle1x - 2 * this.angle2x) -
         2 *
-          Math.sin(this.angle1 - this.angle2) *
-          this.mass2 *
-          (Math.pow(this.angle2_vel, 2) * this.radius2 +
-            angle1_vel2 * this.radius1 * Math.cos(this.angle1 - this.angle2));
+        Math.sin(this.angle1x - this.angle2x) *
+        this.mass2 *
+        (Math.pow(this.angle2x_vel, 2) * this.radius2 +
+          angle1x_vel2 * this.radius1 * Math.cos(this.angle1x - this.angle2x));
 
       let numerator2 =
         2 *
-        Math.sin(this.angle1 - this.angle2) *
-        (angle1_vel2 * this.radius1 * (this.mass1 + this.mass2) +
-          this.gravity * (this.mass1 + this.mass2) * Math.cos(this.angle1) +
-          angle2_vel2 *
-            this.radius2 *
-            this.mass2 *
-            Math.cos(this.angle1 - this.angle2));
+        Math.sin(this.angle1x - this.angle2x) *
+        (angle1x_vel2 * this.radius1 * (this.mass1 + this.mass2) +
+          this.gravity * (this.mass1 + this.mass2) * Math.cos(this.angle1x) +
+          angle2x_vel2 *
+          this.radius2 *
+          this.mass2 *
+          Math.cos(this.angle1x - this.angle2x));
       let denominator =
         2 * this.mass1 +
         this.mass2 -
-        this.mass2 * Math.cos(2 * this.angle1 - 2 * this.angle2);
+        this.mass2 * Math.cos(2 * this.angle1x - 2 * this.angle2x);
 
-      // Double pendulum equation
-      // Arm one
-      let num1 =
-        -this.gravity * (2 * this.mass1 + this.mass2) * Math.sin(this.angle1);
-      let num2 =
-        -this.mass2 * this.gravity * Math.sin(this.angle1 - 2 * this.angle2);
-      let num3 = -2 * Math.sin(this.angle1 - this.angle2) * this.mass2;
-      let num4 =
-        this.angle2_vel * this.angle2_vel * this.radius2 +
-        this.angle1_vel *
-          this.angle1_vel *
-          this.radius1 *
-          Math.cos(this.angle1 - this.angle2);
-      let den =
-        this.radius1 *
-        (2 * this.mass1 +
-          this.mass2 -
-          this.mass2 * Math.cos(2 * this.angle1 - 2 * this.angle2));
-      const a1acc = (num1 + num2 + num3 * num4) / den;
-      // Arm two
-      num1 = 2 * Math.sin(this.angle1 - this.angle2);
-      num2 =
-        this.angle1_vel *
-        this.angle1_vel *
-        this.radius1 *
-        (this.mass1 + this.mass2);
-      num3 = this.gravity * (this.mass1 + this.mass2) * Math.cos(this.angle1);
-      num4 =
-        this.angle2_vel *
-        this.angle2_vel *
-        this.radius2 *
+      this.angle1x_acc = numerator1 / (this.radius1 * denominator);
+      this.angle2x_acc = numerator2 / (this.radius2 * denominator);
+
+      //Apply some gravity forward/backward
+      const angle1z_vel2 = Math.pow(this.angle1z_vel, 2);
+      const angle2z_vel2 = Math.pow(this.angle2z_vel, 2);
+      numerator1 =
+        -this.gravity * (2 * this.mass1 + this.mass2) * Math.sin(this.angle1z) -
+        this.mass2 * this.gravity * Math.sin(this.angle1z - 2 * this.angle2z) -
+        2 *
+        Math.sin(this.angle1z - this.angle2z) *
         this.mass2 *
-        Math.cos(this.angle1 - this.angle2);
-      den =
-        this.radius2 *
-        (2 * this.mass1 +
-          this.mass2 -
-          this.mass2 * Math.cos(2 * this.angle1 - 2 * this.angle2));
-      const a2acc = (num1 * (num2 + num3 + num4)) / den;
+        (Math.pow(this.angle2z_vel, 2) * this.radius2 +
+          angle1z_vel2 * this.radius1 * Math.cos(this.angle1z - this.angle2z));
 
-      this.angle1_acc = a1acc; //= numerator1 / (this.radius1 * denominator);
-      this.angle2_acc = a2acc; //numerator2 / (this.radius2 * denominator);
+      numerator2 =
+        2 *
+        Math.sin(this.angle1z - this.angle2z) *
+        (angle1z_vel2 * this.radius1 * (this.mass1 + this.mass2) +
+          this.gravity * (this.mass1 + this.mass2) * Math.cos(this.angle1z) +
+          angle2z_vel2 *
+          this.radius2 *
+          this.mass2 *
+          Math.cos(this.angle1z - this.angle2z));
+      denominator =
+        2 * this.mass1 +
+        this.mass2 -
+        this.mass2 * Math.cos(2 * this.angle1z - 2 * this.angle2z);
+
+      this.angle1z_acc = numerator1 / (this.radius1 * denominator);
+      this.angle2z_acc = numerator2 / (this.radius2 * denominator);
       // console.log(this.angle1_acc)
       // console.log(this.angle2_acc)
 
-      this.angle1_vel += this.angle1_acc;
-      this.angle2_vel += this.angle2_acc;
-      this.angle1 += this.angle1_vel;
-      this.angle2 += this.angle2_vel;
+      this.angle1x_vel += this.angle1x_acc;
+      this.angle2x_vel += this.angle2x_acc;
+      this.angle1x += this.angle1x_vel;
+      this.angle2x += this.angle2x_vel;
 
-      let x1 = -1 * this.radius1 * Math.sin(this.angle1);
-      let y1 = -1 * this.radius1 * Math.cos(this.angle1);
+      this.angle1z_vel += this.angle1z_acc;
+      this.angle2z_vel += this.angle2z_acc;
+      this.angle1z += this.angle1z_vel;
+      this.angle2z += this.angle2z_vel;
 
-      let x2 = x1 - this.radius2 * Math.sin(this.angle2);
-      let y2 = y1 - this.radius2 * Math.cos(this.angle2);
+      let y1 = -1 * this.radius1 * Math.sin(this.angle1z) * Math.sin(this.angle1x);
+      let x1 = -1 * this.radius1 * Math.sin(this.angle1x) * Math.cos(this.angle1z);
+      let z1 = -1 * this.radius1 * Math.cos(this.angle1z);
 
-      this.ball1.position = new bln.Vector3(x1, y1, 0);
+      let y2 = y1 - this.radius1 * Math.sin(this.angle1z) * Math.sin(this.angle1x);
+      let x2 = x1 - this.radius1 * Math.sin(this.angle1x) * Math.cos(this.angle1z);
+      let z2 = z1 - this.radius1 * Math.cos(this.angle1z);
+
+      this.ball1.position = new bln.Vector3(x1, y1, z1);
       // this.lineOptions.points[1] = this.ball1.position;
+      console.log(this.ball1.position)
+      console.log(this.angle1z)
 
-      this.ball2.position = new bln.Vector3(x2, y2, 0);
+      this.ball2.position = new bln.Vector3(x2, y2, z2);
       // this.lineOptions.points[2] = this.ball2.position;
       //this.box2.position = this.ball2.position
 

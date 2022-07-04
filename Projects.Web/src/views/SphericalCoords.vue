@@ -30,10 +30,11 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import bln from "babylonjs";
+import * as bln from "babylonjs";
+import { Utils } from "@/Scripts/Utils";
 
 @Component({})
-export default class Home extends Vue {
+export default class SphericalCoords extends Vue {
 
   canvas!: HTMLCanvasElement;
   engine!: bln.Engine;
@@ -46,9 +47,13 @@ export default class Home extends Vue {
   phi: number = 0;
 
   mounted() {
+    console.log("mount")
     this.canvas = document.getElementById("render-canvas") as HTMLCanvasElement;
+    console.log(this.canvas)
     if (this.canvas !== undefined) {
-      this.engine = new bln.Engine(this.canvas, false);
+      let engine = new bln.Engine(this.canvas, false);
+      console.log(engine);
+      this.engine = engine;
       this.scene = new bln.Scene(this.engine);
       this.createScene();
       this.engine.runRenderLoop(this.renderLoop);
@@ -83,7 +88,6 @@ export default class Home extends Vue {
 
 
   renderLoop() {
-    throw new Error("Method not implemented.");
   }
 
 }

@@ -19,6 +19,15 @@
             <v-list-item-title>Pendulum</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item link to="/spherecoords">
+          <v-list-item-action>
+            <v-icon></v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Spherical Coordinates</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 <!--        <v-list-item link to="/coalesce-example">-->
 <!--          <v-list-item-action>-->
 <!--            <v-icon>fas fa-palette</v-icon>-->
@@ -34,7 +43,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <router-link to="/" class="white--text" style="text-decoration: none">
-          Web Projects
+          Coalesce Vue Template
         </router-link>
       </v-toolbar-title>
     </v-app-bar>

@@ -28,6 +28,16 @@ export default new Router({
         next();
       },
     },
+    {
+      path: "/spherecoords",
+      name: "sphericalcoordinates",
+      component: () => import("./views/sphericalcoords.vue"),
+      props: { title: "Spherical Coordinates" },
+      beforeEnter(to, from, next) {
+        console.log('entering')
+        next();
+      },
+    },
 
     // Coalesce admin routes
     {

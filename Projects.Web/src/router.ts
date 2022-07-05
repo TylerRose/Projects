@@ -30,8 +30,8 @@ export default new Router({
     },
     {
       path: "/spherecoords",
-      name: "sphericalcoordinates",
-      component: () => import("./views/sphericalcoords.vue"),
+      name: "spherecoords",
+      component: () => import("./views/SphericalCoords.vue"),
       props: { title: "Spherical Coordinates" },
       beforeEnter(to, from, next) {
         console.log('entering')

@@ -32,7 +32,7 @@
             thumb-label="always"
           ></v-slider>
           <v-text-field
-            v-model="initialAngle1"
+            v-model="angle1xDeg"
             hide-details
             single-line
             label="Initial Angle 1"
@@ -59,7 +59,7 @@
             thumb-label="always"
           ></v-slider>
           <v-text-field
-            v-model="initialAngle2"
+            v-model="angle2xDeg"
             hide-details
             single-line
             label="Initial Angle 2"
@@ -220,29 +220,46 @@ export default class Pendulum extends Vue {
     this.mass1 = 15;
     this.mass2 = 5;
     this.gravity = 0.1;
-    this.initialAngle1 = 90;
-    this.initialAngle2 = 135;
+    this.angle1xDeg = 90;
+    this.angle2xDeg = 90;
   }
 
-  get angle1Deg() {
+  get angle1xDeg() {
     return Number.parseFloat(
-      ((this.angle1 * (180 / Math.PI)) % 360).toPrecision(12)
+      ((this.initialAngle1 * (180 / Math.PI)) % 360).toPrecision(12)
     );
   }
 
-  set angle1Deg(value: number) {
+  set angle1xDeg(value: number) {
     this.initialAngle1 = value * (Math.PI / 180);
   }
 
-  get angle2Deg() {
+  get angle2xDeg() {
     return Number.parseFloat(
-      ((this.angle1 * (180 / Math.PI)) % 360).toPrecision(12)
+      ((this.initialAngle2 * (180 / Math.PI)) % 360).toPrecision(12)
     );
   }
 
-  set angle2Deg(value: number) {
+  set angle2xDeg(value: number) {
     this.initialAngle2 = value * (Math.PI / 180);
   }
+  //
+  // get angle1zDeg() {
+  //   return Number.parseFloat(
+  //     ((this.initialAngle1z * (180 / Math.PI)) % 360).toPrecision(12)
+  //   );
+  // }
+  //
+  // set angle1zDeg(value: number) {
+  //   this.initialAngle1z = value * (Math.PI / 180);
+  // }
+  //
+  // get angle2zDeg() {
+  //   return Number.parseFloat(
+  //     ((this.initialAngle2z * (180 / Math.PI)) % 360).toPrecision(12)
+  //   );
+  // }
+
 
   async createScene() {
     this.scene.clearColor = new bln.Color4(0.2, 0.2, 0.2, 0.5);
@@ -283,8 +300,8 @@ export default class Pendulum extends Vue {
 
     //this.lines = bln.MeshBuilder.CreateLines('lines', this.lineOptions, this.scene);
 
-    console.log("1 ", this.ball1.position.toString());
-    console.log("2 ", this.ball2.position.toString());
+    // console.log("1 ", this.ball1.position.toString());
+    // console.log("2 ", this.ball2.position.toString());
 
     //this.box = bln.MeshBuilder.CreateBox("box");
     //this.box2 = bln.MeshBuilder.CreateBox("box2");

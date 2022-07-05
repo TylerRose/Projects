@@ -344,10 +344,6 @@ export default class Pendulum extends Vue {
     this.ball2.material = material2;
 
     //this.lines = bln.MeshBuilder.CreateLines('lines', this.lineOptions, this.scene);
-
-    console.log("1 ", this.ball1.position.toString());
-    console.log("2 ", this.ball2.position.toString());
-
     //this.box = bln.MeshBuilder.CreateBox("box");
     //this.box2 = bln.MeshBuilder.CreateBox("box2");
     //this.box2.position = this.ball2.position
@@ -468,8 +464,6 @@ export default class Pendulum extends Vue {
 
       this.ball1.position = new bln.Vector3(x1, y1, z1);
       // this.lineOptions.points[1] = this.ball1.position;
-      console.log(this.ball1.position)
-      console.log(this.angle1z)
 
       this.ball2.position = new bln.Vector3(x2, y2, z2);
       // this.lineOptions.points[2] = this.ball2.position;

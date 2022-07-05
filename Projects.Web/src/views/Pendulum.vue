@@ -36,7 +36,7 @@
             hide-details
             single-line
             label="Initial Angle 1"
-            suffix="degrees"
+            suffix="radians"
             outlined
             type="number"
           />
@@ -63,7 +63,7 @@
             hide-details
             single-line
             label="Initial Angle 2"
-            suffix="degrees"
+            suffix="radians"
             type="number"
           />
         </v-row>

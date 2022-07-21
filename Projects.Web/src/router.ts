@@ -28,6 +28,16 @@ export default new Router({
         next();
       },
     },
+    {
+      path: "/physicsball",
+      name: "physicsball",
+      component: () => import("./views/PhysicsBall.vue"),
+      props: { title: "Physics Ball" },
+      beforeEnter(to, from, next) {
+        console.log('entering')
+        next();
+      },
+    },
 
     // Coalesce admin routes
     {

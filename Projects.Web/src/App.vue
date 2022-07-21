@@ -19,6 +19,15 @@
             <v-list-item-title>Pendulum</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item link to="/physicsball">
+          <v-list-item-action>
+            <v-icon></v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Physics Ball</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 <!--        <v-list-item link to="/coalesce-example">-->
 <!--          <v-list-item-action>-->
 <!--            <v-icon>fas fa-palette</v-icon>-->
@@ -40,6 +49,7 @@
     </v-app-bar>
 
     <v-main>
+      <div class="ma-3 pa-3">
       <transition
         name="router-transition"
         mode="out-in"
@@ -49,6 +59,7 @@
         <!-- https://stackoverflow.com/questions/52847979/what-is-router-view-key-route-fullpath -->
         <router-view ref="routerView" :key="$route.path" />
       </transition>
+      </div>
     </v-main>
   </v-app>
 </template>

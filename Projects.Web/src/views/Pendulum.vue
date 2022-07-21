@@ -1,5 +1,5 @@
 <template>
-  <div class="ma-3 pa-3">
+  <div>
     <v-card>
       <v-card-title class="ma-3 pa-0"> Controls</v-card-title>
       <v-container class="ma-5">
@@ -84,7 +84,6 @@
     <v-card :height="height" :width="width">
       <canvas id="render-canvas" :height="height" :width="width"></canvas>
     </v-card>
-    <v-card></v-card>
   </div>
 </template>
 <script lang="ts">

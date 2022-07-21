@@ -22,7 +22,7 @@
       </v-container>
     </v-card>
 
-    <v-card class="mt-6" :height="height" :width="width">
+    <v-card :height="height" :width="width">
       <canvas id="render-canvas" :height="height" :width="width"></canvas>
     </v-card>
   </div>
@@ -34,7 +34,7 @@ import * as bln from "babylonjs";
 import {Utils} from "@/Scripts/Utils";
 
 @Component({})
-export default class BabylonjsTemplate extends Vue {
+export default class PhysicsBall extends Vue {
 
   canvas!: HTMLCanvasElement;
   engine!: bln.Engine;
